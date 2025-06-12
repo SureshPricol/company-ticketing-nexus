@@ -1,9 +1,8 @@
-
 import { useParams } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Download, Edit } from 'lucide-react';
+import { ArrowLeft, Download, Edit, Plus } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export default function TicketDetails() {
@@ -73,6 +72,12 @@ export default function TicketDetails() {
           </div>
         </div>
         <div className="flex items-center space-x-2">
+          <Link to={`/tasks/new?ticketId=${ticketData.id}`}>
+            <Button variant="outline">
+              <Plus className="h-4 w-4 mr-2" />
+              Create Task
+            </Button>
+          </Link>
           <Button variant="outline">
             <Download className="h-4 w-4 mr-2" />
             Export

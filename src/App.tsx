@@ -15,6 +15,8 @@ import Tasks from "./pages/Tasks";
 import TaskDetails from "./pages/TaskDetails";
 import NewTask from "./pages/NewTask";
 import ApproverAssign from "./pages/ApproverAssign";
+import ApprovalAssignments from "./pages/ApprovalAssignments";
+import ApprovalAssignmentDetails from "./pages/ApprovalAssignmentDetails";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -37,6 +39,8 @@ const App = () => (
             <Route path="/tasks/new" element={<NewTask />} />
             <Route path="/tasks/:id" element={<TaskDetails />} />
             <Route path="/approver-assign" element={<ApproverAssign />} />
+            <Route path="/approval-assignments" element={<ApprovalAssignments />} />
+            <Route path="/approval-assignments/:id" element={<ApprovalAssignmentDetails />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

@@ -6,6 +6,7 @@ import {
   CheckSquare, 
   ClipboardList, 
   UserCheck,
+  Users,
   Menu,
   X
 } from 'lucide-react';
@@ -22,6 +23,7 @@ const sidebarItems = [
   { name: 'Approval', href: '/approvals', icon: CheckSquare },
   { name: 'Task', href: '/tasks', icon: ClipboardList },
   { name: 'Approver Assign', href: '/approver-assign', icon: UserCheck },
+  { name: 'Approval Assignments', href: '/approval-assignments', icon: Users },
 ];
 
 export function Layout({ children }: LayoutProps) {
@@ -82,7 +84,6 @@ export function Layout({ children }: LayoutProps) {
 
       {/* Main content */}
       <div className="lg:ml-64">
-        {/* Top bar */}
         <div className="flex items-center h-16 px-4 bg-card border-b lg:px-6">
           <button
             onClick={() => setSidebarOpen(true)}
@@ -97,7 +98,6 @@ export function Layout({ children }: LayoutProps) {
           </div>
         </div>
 
-        {/* Page content */}
         <main className="p-6">
           {children}
         </main>

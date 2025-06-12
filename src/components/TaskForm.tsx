@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -11,8 +10,10 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { users, vendors } from '@/data/formData';
 import { useToast } from '@/hooks/use-toast';
+import { useSearchParams } from 'react-router-dom';
 
 const formSchema = z.object({
+  ticketId: z.string().min(1, 'Ticket is required'),
   title: z.string().min(1, 'Title is required'),
   description: z.string().min(10, 'Description must be at least 10 characters'),
   taskType: z.string().min(1, 'Task type is required'),
@@ -24,13 +25,23 @@ const formSchema = z.object({
 
 type FormData = z.infer<typeof formSchema>;
 
+// Mock tickets data
+const tickets = [
+  { value: 'TKT-001', label: 'TKT-001 - Website Update Request' },
+  { value: 'TKT-002', label: 'TKT-002 - Marketing Campaign' },
+  { value: 'TKT-003', label: 'TKT-003 - Product Launch' },
+];
+
 export function TaskForm() {
   const [selectedTaskType, setSelectedTaskType] = useState<string>('');
   const { toast } = useToast();
+  const [searchParams] = useSearchParams();
+  const ticketIdFromUrl = searchParams.get('ticketId');
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      ticketId: ticketIdFromUrl || '',
       title: '',
       description: '',
       taskType: '',
@@ -59,6 +70,35 @@ export function TaskForm() {
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <FormField
+              control={form.control}
+              name="ticketId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Related Ticket *</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    value={field.value}
+                    disabled={!!ticketIdFromUrl}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select related ticket" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {tickets.map((ticket) => (
+                        <SelectItem key={ticket.value} value={ticket.value}>
+                          {ticket.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <FormField
               control={form.control}
               name="title"
