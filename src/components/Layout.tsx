@@ -8,7 +8,10 @@ import {
   UserCheck,
   Users,
   Menu,
-  X
+  X,
+  Settings,
+  Calendar,
+  ChevronDown
 } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
@@ -24,10 +27,18 @@ const sidebarItems = [
   { name: 'Task', href: '/tasks', icon: ClipboardList },
   { name: 'Approver Assign', href: '/approver-assign', icon: UserCheck },
   { name: 'Approval Assignments', href: '/approval-assignments', icon: Users },
+  { name: 'Periodic Requests', href: '/periodic-requests', icon: Calendar },
+];
+
+const masterItems = [
+  { name: 'Request Status', href: '/masters/request-status', icon: Settings },
+  { name: 'Task Status', href: '/masters/task-status', icon: Settings },
+  { name: 'Vendor Master', href: '/masters/vendor', icon: Settings },
 ];
 
 export function Layout({ children }: LayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [mastersOpen, setMastersOpen] = useState(false);
   const location = useLocation();
 
   return (
@@ -78,6 +89,46 @@ export function Layout({ children }: LayoutProps) {
                 </Link>
               );
             })}
+            
+            {/* Masters Section */}
+            <div className="pt-4">
+              <button
+                onClick={() => setMastersOpen(!mastersOpen)}
+                className="w-full flex items-center justify-between px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors"
+              >
+                <div className="flex items-center">
+                  <Settings className="mr-3 h-5 w-5" />
+                  Masters
+                </div>
+                <ChevronDown className={cn("h-4 w-4 transition-transform", mastersOpen && "rotate-180")} />
+              </button>
+              
+              {mastersOpen && (
+                <div className="ml-6 mt-2 space-y-1">
+                  {masterItems.map((item) => {
+                    const Icon = item.icon;
+                    const isActive = location.pathname === item.href;
+                    
+                    return (
+                      <Link
+                        key={item.name}
+                        to={item.href}
+                        className={cn(
+                          "flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors",
+                          isActive 
+                            ? "bg-primary text-primary-foreground" 
+                            : "text-muted-foreground hover:text-foreground hover:bg-accent"
+                        )}
+                        onClick={() => setSidebarOpen(false)}
+                      >
+                        <Icon className="mr-3 h-4 w-4" />
+                        {item.name}
+                      </Link>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
           </div>
         </nav>
       </div>
