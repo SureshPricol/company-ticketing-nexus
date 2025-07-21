@@ -3,11 +3,17 @@ import { useParams } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
 import { ArrowLeft, Edit, Clock, User, Calendar } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { taskStatuses } from '@/data/formData';
+import { useState } from 'react';
 
 export default function TaskDetails() {
   const { id } = useParams();
+  const [taskStatus, setTaskStatus] = useState('in-progress');
+  const [completionDetails, setCompletionDetails] = useState('');
 
   // Mock data
   const taskData = {
@@ -222,6 +228,34 @@ export default function TaskDetails() {
                   {taskData.type}
                 </Badge>
               </div>
+              
+              <div className="space-y-2">
+                <span className="text-sm font-medium text-muted-foreground">Update Status:</span>
+                <Select value={taskStatus} onValueChange={setTaskStatus}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {taskStatuses.map((status) => (
+                      <SelectItem key={status.value} value={status.value}>
+                        {status.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              {(taskStatus === 'completed' || taskStatus === 'review') && (
+                <div className="space-y-2">
+                  <span className="text-sm font-medium text-muted-foreground">Completion Details:</span>
+                  <Textarea
+                    placeholder="Enter completion details or remarks..."
+                    value={completionDetails}
+                    onChange={(e) => setCompletionDetails(e.target.value)}
+                    className="min-h-[80px]"
+                  />
+                </div>
+              )}
             </CardContent>
           </Card>
 

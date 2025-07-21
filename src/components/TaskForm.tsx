@@ -8,7 +8,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { users, vendors } from '@/data/formData';
+import { users, vendorMaster, priorities } from '@/data/formData';
 import { useToast } from '@/hooks/use-toast';
 import { useSearchParams } from 'react-router-dom';
 
@@ -17,10 +17,12 @@ const formSchema = z.object({
   title: z.string().min(1, 'Title is required'),
   description: z.string().min(10, 'Description must be at least 10 characters'),
   taskType: z.string().min(1, 'Task type is required'),
+  priority: z.string().min(1, 'Priority is required'),
   responsiblePerson: z.string().min(1, 'Responsible person is required'),
   plannedStartDate: z.string().min(1, 'Planned start date is required'),
   plannedEndDate: z.string().min(1, 'Planned end date is required'),
   vendor: z.string().optional(),
+  completionDetails: z.string().optional(),
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -45,10 +47,12 @@ export function TaskForm() {
       title: '',
       description: '',
       taskType: '',
+      priority: '',
       responsiblePerson: '',
       plannedStartDate: '',
       plannedEndDate: '',
       vendor: '',
+      completionDetails: '',
     },
   });
 
@@ -131,7 +135,7 @@ export function TaskForm() {
               )}
             />
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <FormField
                 control={form.control}
                 name="taskType"
@@ -156,6 +160,31 @@ export function TaskForm() {
                       <SelectContent>
                         <SelectItem value="internal">Internal</SelectItem>
                         <SelectItem value="external">External</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="priority"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Priority *</FormLabel>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select priority" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {priorities.map((priority) => (
+                          <SelectItem key={priority.value} value={priority.value}>
+                            {priority.label}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -239,9 +268,9 @@ export function TaskForm() {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {vendors.map((vendor) => (
+                        {vendorMaster.map((vendor) => (
                           <SelectItem key={vendor.value} value={vendor.value}>
-                            {vendor.label}
+                            {vendor.label} - {vendor.service}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -251,6 +280,24 @@ export function TaskForm() {
                 )}
               />
             )}
+
+            <FormField
+              control={form.control}
+              name="completionDetails"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Completion Details / Remarks</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="Add completion details or remarks when closing the task..."
+                      className="min-h-[80px]"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
             <div className="flex justify-end space-x-4">
               <Button type="button" variant="outline" onClick={() => form.reset()}>

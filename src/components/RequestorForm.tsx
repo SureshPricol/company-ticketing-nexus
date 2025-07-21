@@ -9,7 +9,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { requestOptions, mediumOptions, formDataMapping } from '@/data/formData';
+import { requestOptions, mediumOptions, formDataMapping, companies, locations, branches, brands, divisions, departments } from '@/data/formData';
 import { useToast } from '@/hooks/use-toast';
 
 const formSchema = z.object({
@@ -20,6 +20,12 @@ const formSchema = z.object({
   additionalSpecs: z.string().optional(),
   roiExpected: z.string().min(1, 'ROI Expected is required'),
   requiredDate: z.string().min(1, 'Required date is required'),
+  company: z.string().min(1, 'Company is required'),
+  location: z.string().min(1, 'Location is required'),
+  branch: z.string().min(1, 'Branch is required'),
+  brand: z.string().min(1, 'Brand is required'),
+  division: z.string().min(1, 'Division is required'),
+  department: z.string().min(1, 'Department is required'),
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -39,6 +45,12 @@ export function RequestorForm() {
       additionalSpecs: '',
       roiExpected: '',
       requiredDate: '',
+      company: '',
+      location: '',
+      branch: '',
+      brand: '',
+      division: '',
+      department: '',
     },
   });
 
@@ -200,35 +212,200 @@ export function RequestorForm() {
               )}
             />
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="roiExpected"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>ROI Expected *</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Expected return on investment" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+            <FormField
+              control={form.control}
+              name="roiExpected"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>ROI Expected *</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="Expected return on investment..."
+                      className="min-h-[80px]"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-              <FormField
-                control={form.control}
-                name="requiredDate"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Required Date *</FormLabel>
-                    <FormControl>
-                      <Input type="date" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+            <FormField
+              control={form.control}
+              name="requiredDate"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Required Date *</FormLabel>
+                  <FormControl>
+                    <Input 
+                      type="date" 
+                      min={new Date().toISOString().split('T')[0]}
+                      {...field} 
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <Card className="mt-6">
+              <CardHeader>
+                <CardTitle>Request For</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="company"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Company *</FormLabel>
+                        <Select onValueChange={field.onChange} value={field.value}>
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select company" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {companies.map((company) => (
+                              <SelectItem key={company.value} value={company.value}>
+                                {company.label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="location"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Location *</FormLabel>
+                        <Select onValueChange={field.onChange} value={field.value}>
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select location" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {locations.map((location) => (
+                              <SelectItem key={location.value} value={location.value}>
+                                {location.label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="branch"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Branch *</FormLabel>
+                        <Select onValueChange={field.onChange} value={field.value}>
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select branch" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {branches.map((branch) => (
+                              <SelectItem key={branch.value} value={branch.value}>
+                                {branch.label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="brand"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Brand *</FormLabel>
+                        <Select onValueChange={field.onChange} value={field.value}>
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select brand" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {brands.map((brand) => (
+                              <SelectItem key={brand.value} value={brand.value}>
+                                {brand.label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="division"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Division *</FormLabel>
+                        <Select onValueChange={field.onChange} value={field.value}>
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select division" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {divisions.map((division) => (
+                              <SelectItem key={division.value} value={division.value}>
+                                {division.label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="department"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Department *</FormLabel>
+                        <Select onValueChange={field.onChange} value={field.value}>
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select department" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {departments.map((department) => (
+                              <SelectItem key={department.value} value={department.value}>
+                                {department.label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </CardContent>
+            </Card>
 
             <div className="flex justify-end space-x-4">
               <Button type="button" variant="outline" onClick={() => form.reset()}>

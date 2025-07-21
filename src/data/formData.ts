@@ -98,3 +98,37 @@ export const approvers = [
   { value: 'approver-4', label: 'Sunita Patel (VP)' },
   { value: 'marketing-head', label: 'Vikram Gupta (Marketing Head)' }
 ];
+
+// Master Data for Statuses
+export const requestStatuses = [
+  { value: 'draft', label: 'Draft' },
+  { value: 'rejected', label: 'Rejected' },
+  { value: 'completed', label: 'Completed' },
+  { value: 'on-hold', label: 'On Hold' },
+  { value: 'in-progress', label: 'In Progress' },
+  { value: 'pending', label: 'Pending' }
+];
+
+export const taskStatuses = [
+  { value: 'yet-to-start', label: 'Yet to Start' },
+  { value: 'in-progress', label: 'In Progress' },
+  { value: 'on-hold', label: 'On Hold' },
+  { value: 'review', label: 'Review' },
+  { value: 'completed', label: 'Completed' }
+];
+
+export const priorities = [
+  { value: 'low', label: 'Low' },
+  { value: 'medium', label: 'Medium' },
+  { value: 'high', label: 'High' }
+];
+
+// Vendor Master with service mapping
+export const vendorMaster = [
+  { value: 'vendor-1', label: 'Creative Solutions Ltd', service: 'Design & Printing' },
+  { value: 'vendor-2', label: 'Design Hub Co', service: 'Web Development' },
+  { value: 'vendor-3', label: 'Print Masters Inc', service: 'Printing & Signage' },
+  { value: 'vendor-4', label: 'Digital Agency Pro', service: 'Digital Marketing' },
+  { value: 'vendor-5', label: 'Event Masters', service: 'Event Management' },
+  { value: 'vendor-6', label: 'Content Creators', service: 'Content Writing' }
+];
